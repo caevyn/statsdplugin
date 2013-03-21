@@ -18,17 +18,18 @@ var net = require('net'),
 var debug;
 var flushInterval;
 var APIKey;
+var proxySettings;
 
 var graphiteStats = {};
 
 var post_stats = function graphite_post_stats(statString) {
   var options = {
-    host: 'www.hostedgraphite.com',
-    port: 80,
-    path: '/api/v1/sink',
+    host: proxySettings ? proxySettings.host : 'www.hostedgraphite.com',
+    port: proxySettings ? proxySettings.port : 80,
+    path: 'http://www.hostedgraphite.com/api/v1/sink',
     method: 'POST',
     auth: APIKey,
-    headers: {'Content-Length': statString.length}
+    headers: {'Content-Length': statString.length, 'Host': 'www.hostedgraphite.com'}
   };
   
   var req = http.request(options, function(res) {
@@ -138,7 +139,7 @@ var backend_status = function graphite_status(writeCb) {
 exports.init = function graphite_init(startup_time, config, events) {
   debug = config.debug;
   APIKey = config.hostedGraphiteAPIKey;
-
+  proxySettings = config.proxySettings;
   graphiteStats.last_flush = startup_time;
   graphiteStats.last_exception = startup_time;
 
