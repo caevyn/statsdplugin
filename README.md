@@ -1,4 +1,5 @@
 # Hosted Graphite statsd plugin
+## Only difference is I have hacked in some proxy support.
 
 This is a plugin for [etsy's statsd](https://github.com/etsy/statsd) that sends your metric data to the [Hosted Graphite](http://www.hostedgraphite.com) service.
 
@@ -31,5 +32,6 @@ Set ```hostedGraphiteAPIKey``` to your key. This looks like a UUID and is availa
       port: 8125
    ,  backends: ['./backends/hostedgraphite']
    ,  hostedGraphiteAPIKey: 'deadbeef-dead-beef-dead-beefdeadbeef'
+   ,  proxySettings : {host: '127.0.0.1', port:3128}
 }
 ```
